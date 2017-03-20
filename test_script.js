@@ -1,5 +1,5 @@
 const pg = require("pg");
-const settings = require("./settings"); // settings.json
+const settings = require("./settings");
 
 const client = new pg.Client({
   user     : settings.user,
@@ -14,11 +14,17 @@ client.connect((err) => {
   if (err) {
     return console.error("Connection Error", err);
   }
-  client.query("SELECT $1::int AS number", ["1"], (err, result) => {
+  var id = "10";
+
+  client.query("SELECT * FROM famous_people;", (err, result) => {
     if (err) {
       return console.error("error running query", err);
     }
-    console.log(result.rows[0].number); //output: 1
+    result.rows.forEach(function(person) {
+
+      console.log(person.first_name, person.last_name); //output: 1
+    })
     client.end();
   });
+
 });
